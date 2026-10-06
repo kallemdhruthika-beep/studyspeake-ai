@@ -1,0 +1,3220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>StudySpeak AI</title>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap"
+  rel="stylesheet"
+>
+
+<style>
+:root{
+  --bg:#f6f5ff;
+  --card:#fff;
+  --ink:#1d1b3a;
+  --mut:#615f85;
+  --blue:#3b6cf6;
+  --pur:#7c4dff;
+  --line:#e3e0fa;
+  --ok:#12805c;
+  --bad:#c2362f;
+  box-sizing:border-box;
+}
+
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#14122b;
+    --card:#1f1c3d;
+    --ink:#eeecff;
+    --mut:#a9a6d3;
+    --line:#352f66;
+    --ok:#4fd1a1;
+    --bad:#ff8a80;
+  }
+}
+
+:root[data-theme="dark"]{
+  --bg:#14122b;
+  --card:#1f1c3d;
+  --ink:#eeecff;
+  --mut:#a9a6d3;
+  --line:#352f66;
+  --ok:#4fd1a1;
+  --bad:#ff8a80;
+}
+
+html{
+  scroll-padding-top:env(safe-area-inset-top,0px);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font:16px/1.55 Nunito,system-ui,sans-serif;
+}
+
+.wrap{
+  max-width:1000px;
+  margin:0 auto;
+  padding:16px;
+}
+
+header{
+  position:sticky;
+  top:0;
+  background:var(--card);
+  border-bottom:1px solid var(--line);
+  z-index:5;
+}
+
+header .wrap{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+  padding:10px 16px;
+}
+
+.logo{
+  font-weight:800;
+  font-size:20px;
+  background:linear-gradient(90deg,var(--blue),var(--pur));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  margin-right:auto;
+  cursor:pointer;
+}
+
+nav{
+  display:flex;
+  gap:4px;
+  flex-wrap:wrap;
+}
+
+button,
+select,
+input,
+textarea{
+  font:inherit;
+  color:inherit;
+}
+
+.nav,
+.btn{
+  border:1px solid var(--line);
+  background:var(--card);
+  border-radius:999px;
+  padding:8px 14px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.nav.on{
+  background:var(--pur);
+  color:#fff;
+  border-color:var(--pur);
+}
+
+.btn.pri{
+  background:linear-gradient(90deg,var(--blue),var(--pur));
+  color:#fff;
+  border:0;
+  padding:12px 20px;
+  font-weight:800;
+}
+
+.btn.big{
+  font-size:18px;
+  padding:16px 24px;
+}
+
+.btn.red{
+  background:var(--bad);
+  color:#fff;
+  border:0;
+}
+
+button:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+input:focus-visible{
+  outline:3px solid var(--blue);
+  outline-offset:2px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:18px;
+  box-shadow:0 4px 14px rgba(80,60,200,.08);
+}
+
+.grid{
+  display:grid;
+  gap:14px;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+}
+
+.hero{
+  padding:36px 0 20px;
+}
+
+.hero h1{
+  font-size:clamp(30px,6vw,52px);
+  line-height:1.1;
+  margin:0 0 10px;
+}
+
+.mut{
+  color:var(--mut);
+}
+
+.row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.pill{
+  display:inline-block;
+  border-radius:99px;
+  padding:2px 10px;
+  font-size:13px;
+  background:var(--line);
+  font-weight:700;
+}
+
+.note{
+  border-left:4px solid var(--pur);
+  padding:8px 12px;
+  background:var(--card);
+  border-radius:8px;
+  font-size:14px;
+  margin:10px 0;
+}
+
+.avatar{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  margin:10px auto;
+  background:linear-gradient(135deg,var(--blue),var(--pur));
+  display:grid;
+  place-items:center;
+  font-size:64px;
+  position:relative;
+}
+
+.avatar.live::after,
+.avatar.listen::after{
+  content:"";
+  position:absolute;
+  inset:-12px;
+  border-radius:50%;
+  border:4px solid var(--pur);
+  opacity:.5;
+  animation:p 1.4s infinite;
+}
+
+.avatar.listen::after{
+  border-color:var(--blue);
+}
+
+@keyframes p{
+  from{
+    transform:scale(.92);
+    opacity:.7;
+  }
+  to{
+    transform:scale(1.15);
+    opacity:0;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .avatar::after{
+    animation:none!important;
+  }
+}
+
+.call{
+  text-align:center;
+}
+
+.timer{
+  font-variant-numeric:tabular-nums;
+  font-weight:800;
+  font-size:22px;
+}
+
+.mic{
+  width:76px;
+  height:76px;
+  border-radius:50%;
+  border:0;
+  font-size:30px;
+  cursor:pointer;
+  background:var(--blue);
+  color:#fff;
+}
+
+.mic.on{
+  background:var(--bad);
+}
+
+.mic:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.log{
+  max-height:240px;
+  overflow:auto;
+  text-align:left;
+  margin-top:12px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.b{
+  padding:8px 12px;
+  border-radius:14px;
+  max-width:85%;
+}
+
+.b.ai{
+  background:var(--line);
+}
+
+.b.me{
+  background:var(--blue);
+  color:#fff;
+  align-self:flex-end;
+}
+
+.tabs{
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+  padding-bottom:6px;
+}
+
+.tabs .nav{
+  white-space:nowrap;
+}
+
+.seg{
+  padding:8px 0;
+  border-bottom:1px dashed var(--line);
+}
+
+.ts{
+  font-weight:800;
+  color:var(--pur);
+}
+
+.screen{
+  background:var(--line);
+  border-radius:12px;
+  padding:8px 12px;
+  margin:6px 0;
+}
+
+.opt{
+  display:block;
+  width:100%;
+  text-align:left;
+  margin:6px 0;
+}
+
+.opt.good{
+  border-color:var(--ok);
+  background:rgba(18,128,92,.12);
+}
+
+.opt.wrong{
+  border-color:var(--bad);
+  background:rgba(194,54,47,.12);
+}
+
+.fc{
+  min-height:110px;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  font-weight:700;
+}
+
+.bar{
+  height:12px;
+  border-radius:6px;
+  background:linear-gradient(90deg,var(--blue),var(--pur));
+}
+
+.hide{
+  display:none;
+}
+
+textarea,
+input[type=file],
+input[type=url],
+input[type=text],
+select{
+  width:100%;
+  border:1px solid var(--line);
+  background:var(--card);
+  border-radius:12px;
+  padding:10px;
+}
+
+.err{
+  color:var(--bad);
+  font-weight:700;
+}
+
+.corr b{
+  color:var(--ok);
+}
+
+.video-preview{
+  width:100%;
+  min-height:220px;
+  border:0;
+  border-radius:14px;
+  margin-top:12px;
+}
+
+.loading{
+  opacity:.7;
+  pointer-events:none;
+}
+
+@media(max-width:600px){
+  .wrap{
+    padding:12px;
+  }
+
+  header .wrap{
+    padding:8px 12px;
+  }
+
+  .logo{
+    width:100%;
+    margin-right:0;
+  }
+
+  nav{
+    width:100%;
+  }
+
+  nav .nav{
+    flex:1;
+  }
+
+  .hero{
+    padding-top:24px;
+  }
+
+  .avatar{
+    width:120px;
+    height:120px;
+    font-size:50px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="wrap">
+
+    <span class="logo" onclick="go('home')">
+      🎙 StudySpeak AI
+    </span>
+
+    <nav id="nav"></nav>
+
+    <select id="lang" aria-label="Language mode" style="width:auto">
+      <option value="en">English</option>
+      <option value="te">Telugu-English</option>
+      <option value="si">Simple English</option>
+    </select>
+
+    <button class="nav" id="theme" aria-label="Toggle theme">
+      ◐
+    </button>
+
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<footer class="wrap mut" style="font-size:13px">
+  AI feedback is for learning support. Please verify important academic information
+  with your teacher or trusted sources. Uploaded PDFs are processed by the local
+  StudySpeak server.
+</footer>
+
+<script>
+
+/* =========================================================
+   BASIC HELPERS
+========================================================= */
+
+const $ = s => document.querySelector(s);
+
+const esc = s =>
+  String(s ?? "").replace(/[&<>"]/g, c => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;"
+  }[c]));
+
+
+/* =========================================================
+   APP STATE
+========================================================= */
+
+let lang = "en";
+let view = "home";
+let tab = "Exact Transcript";
+
+let material = null;
+let studyData = null;
+
+let call = null;
+let secs = 0;
+let timer = null;
+
+let topic = "Job interview practice";
+let last = "";
+
+let rec = null;
+let muted = false;
+let listening = false;
+
+let quiz = {
+  i:0,
+  score:0,
+  done:false,
+  ans:null
+};
+
+let fcFlip = {};
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+const NAV = [
+  ["home","Home"],
+  ["practice","English Practice"],
+  ["study","PDF / Video"],
+  ["progress","Progress"]
+];
+
+
+/* =========================================================
+   SPEECH
+========================================================= */
+
+const SR =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition ||
+  null;
+
+function speak(text, rate = 1){
+
+  try{
+
+    if(!("speechSynthesis" in window)){
+      return;
+    }
+
+    speechSynthesis.cancel();
+
+    const u =
+      new SpeechSynthesisUtterance(
+        String(text).replace(/[‘’“”]/g,"")
+      );
+
+    u.rate = rate;
+    u.lang = "en-IN";
+
+    u.onstart = () => av("live");
+    u.onend = () => av("");
+
+    speechSynthesis.speak(u);
+
+  }catch(e){
+    console.error("Speech error:",e);
+  }
+}
+
+function av(c){
+
+  const a = $("#av");
+
+  if(a){
+    a.className = "avatar " + c;
+  }
+}
+
+function say(text,rate=1){
+
+  log("ai",text);
+  speak(text,rate);
+}
+
+function log(w,text){
+
+  const l = $("#log");
+
+  if(!l) return;
+
+  l.insertAdjacentHTML(
+    "beforeend",
+    `<div class="b ${w}">${esc(text)}</div>`
+  );
+
+  l.scrollTop = l.scrollHeight;
+}
+
+
+/* =========================================================
+   ENGLISH CORRECTION ENGINE
+========================================================= */
+
+const RULES = [
+
+  [
+    /\bI am (completed|finished|done)\b/i,
+    m => "I " + m[1],
+    'Use simple past: "I completed", not "I am completed".'
+  ],
+
+  [
+    /\bI want job\b/i,
+    () => "I want a job",
+    'Add the article "a" before "job".'
+  ],
+
+  [
+    /\b(he|she) (go|have|do|like)\b/i,
+    m =>
+      m[1] + " " +
+      ({
+        go:"goes",
+        have:"has",
+        do:"does",
+        like:"likes"
+      })[m[2].toLowerCase()],
+    "With he/she, the verb needs -s or -es."
+  ],
+
+  [
+    /\bI am agree\b/i,
+    () => "I agree",
+    '"Agree" is already a verb, so do not add "am".'
+  ],
+
+  [
+    /\byesterday I go\b/i,
+    () => "yesterday I went",
+    'Yesterday needs past tense: "went".'
+  ],
+
+  [
+    /\bmore better\b/i,
+    () => "better",
+    'Use "better" alone, not "more better".'
+  ],
+
+  [
+    /\bI am having (\d+) years?\b/i,
+    m => "I am " + m[1] + " years old",
+    'For age, say "I am 20 years old", not "I am having 20 years".'
+  ],
+
+  [
+    /\bI didn't went\b/i,
+    () => "I didn't go",
+    'After "didn\'t", use the base verb "go".'
+  ],
+
+  [
+    /\bI have went\b/i,
+    () => "I have gone",
+    'Use "have gone" with the present perfect.'
+  ],
+
+  [
+    /\bhe don't\b/i,
+    () => "he doesn't",
+    'With "he", use "doesn\'t".'
+  ],
+
+  [
+    /\bshe don't\b/i,
+    () => "she doesn't",
+    'With "she", use "doesn\'t".'
+  ]
+
+];
+
+
+function analyze(s){
+
+  const text = String(s || "").trim();
+
+  const found = [];
+
+  for(const rule of RULES){
+
+    const match = text.match(rule[0]);
+
+    if(match){
+
+      found.push({
+        wrong:match[0],
+        right:rule[1](match),
+        why:rule[2]
+      });
+
+    }
+
+    if(found.length >= 2){
+      break;
+    }
+  }
+
+  const words =
+    text
+      ? text.split(/\s+/).filter(Boolean).length
+      : 0;
+
+  let fixed = text;
+
+  for(const f of found){
+
+    fixed = fixed.replace(
+      f.wrong,
+      f.right
+    );
+
+  }
+
+  if(
+    /job$/i.test(text) ||
+    /I want a job$/i.test(fixed)
+  ){
+
+    fixed = fixed.replace(
+      /,?\s*and I want a job\.?$/i,
+      ", and I am looking for a job."
+    );
+
+  }
+
+  if(fixed){
+
+    fixed =
+      fixed.charAt(0).toUpperCase() +
+      fixed.slice(1);
+
+    if(!/[.?!]$/.test(fixed)){
+      fixed += ".";
+    }
+
+  }
+
+  const uniqueWords =
+    new Set(
+      text
+        .toLowerCase()
+        .split(/\W+/)
+        .filter(Boolean)
+    ).size;
+
+  const grammar =
+    Math.max(
+      4,
+      10 - found.length * 2
+    );
+
+  const fluency =
+    Math.min(
+      9,
+      Math.max(
+        4,
+        Math.round(words / 2) + 3
+      )
+    );
+
+  const vocabulary =
+    Math.min(
+      9,
+      5 + Math.floor(uniqueWords / 4)
+    );
+
+  return {
+    found,
+    fixed,
+    g:grammar,
+    f:fluency,
+    v:vocabulary,
+    tip:
+      found.length
+        ? "Say your corrected sentence aloud twice."
+        : 'Try adding one linking word like "because" or "so".'
+  };
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render(){
+
+  const nav = $("#nav");
+
+  nav.innerHTML =
+    NAV
+      .map(n =>
+        `<button class="nav ${view===n[0]?"on":""}"
+          onclick="go('${n[0]}')">
+          ${n[1]}
+        </button>`
+      )
+      .join("");
+
+  const views = {
+    home,
+    practice,
+    study,
+    progress
+  };
+
+  if(views[view]){
+
+    $("#app").innerHTML =
+      views[view]();
+
+  }
+
+  if(view === "practice"){
+    bindPractice();
+  }
+
+  if(view === "study"){
+    bindStudy();
+  }
+
+}
+
+
+function go(v){
+
+  if(call){
+    endCall(true);
+  }
+
+  if("speechSynthesis" in window){
+    speechSynthesis.cancel();
+  }
+
+  view = v;
+
+  render();
+
+  window.scrollTo(0,0);
+}
+
+
+/* =========================================================
+   HOME
+========================================================= */
+
+function home(){
+
+  return `
+    <section class="hero">
+
+      <h1>
+        Learn by speaking.<br>
+        Understand every lesson.
+      </h1>
+
+      <p class="mut"
+         style="font-size:18px;max-width:560px">
+        Your voice-first AI English coach and personal study teacher.
+      </p>
+
+      <div class="row">
+
+        <button
+          class="btn pri big"
+          onclick="go('practice')">
+          Start English Voice Practice
+        </button>
+
+        <button
+          class="btn big"
+          onclick="go('study')">
+          Learn From PDF or Video
+        </button>
+
+      </div>
+
+    </section>
+
+    <div class="grid">
+
+      <div class="card">
+        <h3>English Speaking Practice</h3>
+        <p class="mut">
+          Talk to an AI teacher like a phone call.
+          Get gentle corrections, spoken aloud.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Learn From Study Material</h3>
+        <p class="mut">
+          Upload a PDF, video, or transcript.
+          The teacher explains your study material.
+        </p>
+      </div>
+
+    </div>
+
+    <h2>How it works</h2>
+
+    <div class="grid">
+
+      <div class="card">
+        <b>1. Choose a mode</b>
+        <p class="mut">
+          Speaking practice or study material.
+        </p>
+      </div>
+
+      <div class="card">
+        <b>2. Speak</b>
+        <p class="mut">
+          Allow the microphone and talk naturally.
+        </p>
+      </div>
+
+      <div class="card">
+        <b>3. Get feedback</b>
+        <p class="mut">
+          Hear corrections and repeat after the teacher.
+        </p>
+      </div>
+
+      <div class="card">
+        <b>4. Revise</b>
+        <p class="mut">
+          Notes, flashcards, quizzes and progress.
+        </p>
+      </div>
+
+    </div>
+
+    <h2>Features</h2>
+
+    <div class="grid">
+
+      ${[
+        "🗣 Speak with AI teacher",
+        "✅ Get instant English correction",
+        "📄 Upload PDF and learn by voice",
+        "🎬 Analyze educational videos",
+        "📝 Generate notes and key points",
+        "🧠 Flashcards and quizzes",
+        "📊 Track learning progress"
+      ]
+      .map(f =>
+        `<div class="card"><b>${f}</b></div>`
+      )
+      .join("")}
+
+    </div>
+
+    <p class="note">
+      Upload only content you own or have permission to use.
+    </p>
+  `;
+}
+
+
+/* =========================================================
+   ENGLISH PRACTICE
+========================================================= */
+
+const TOPICS = [
+  "Daily English conversation",
+  "Job interview practice",
+  "Self introduction",
+  "College presentation practice",
+  "Group discussion",
+  "Travel English",
+  "Customer-service English",
+  "Vocabulary practice"
+];
+
+const QS = {
+
+  "Daily English conversation":
+    "What did you do today?",
+
+  "Job interview practice":
+    "Tell me about yourself and your education.",
+
+  "Self introduction":
+    "Please introduce yourself in two sentences.",
+
+  "College presentation practice":
+    "What is your presentation topic?",
+
+  "Group discussion":
+    "Is social media good for students? Why?",
+
+  "Travel English":
+    "You are at an airport. How will you ask for the boarding gate?",
+
+  "Customer-service English":
+    "A customer says the order is late. What will you say?",
+
+  "Vocabulary practice":
+    'Use the word "improve" in a sentence.'
+
+};
+
+
+function practice(){
+
+  return `
+    <h1>English Voice Practice</h1>
+
+    <div
+      class="grid"
+      style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+
+      <div class="card call">
+
+        <div class="pill" id="status">
+          Not connected
+        </div>
+
+        <div
+          class="avatar"
+          id="av"
+          aria-hidden="true">
+          👩‍🏫
+        </div>
+
+        <div class="timer" id="timer">
+          00:00
+        </div>
+
+        <label class="mut">
+          Topic
+
+          <select id="topic">
+
+            ${TOPICS
+              .map(t =>
+                `<option
+                  ${t===topic?"selected":""}>
+                  ${t}
+                </option>`
+              )
+              .join("")}
+
+          </select>
+
+        </label>
+
+        <div
+          class="row"
+          style="justify-content:center;margin:14px 0">
+
+          <button
+            class="btn pri"
+            id="start">
+            📞 Start Call
+          </button>
+
+          <button
+            class="mic"
+            id="mic"
+            disabled
+            aria-label="Speak">
+            🎤
+          </button>
+
+          <button
+            class="btn"
+            id="mute"
+            disabled>
+            Mute
+          </button>
+
+          <button
+            class="btn red"
+            id="end"
+            disabled>
+            End Call
+          </button>
+
+        </div>
+
+        <div
+          id="micmsg"
+          class="mut"
+          style="font-size:14px">
+          Press Start Call, then allow the microphone.
+        </div>
+
+        <div
+          class="row"
+          style="justify-content:center;margin-top:10px">
+
+          <button class="btn" data-a="slow">
+            Repeat Slowly
+          </button>
+
+          <button class="btn" data-a="te">
+            Explain in Telugu-English
+          </button>
+
+          <button class="btn" data-a="ex">
+            Give Me an Example
+          </button>
+
+          <button class="btn" data-a="q">
+            Ask Me a Question
+          </button>
+
+          <button class="btn" data-a="topic">
+            Change Topic
+          </button>
+
+        </div>
+
+        <div
+          class="log"
+          id="log"
+          aria-live="polite">
+
+          <span class="mut">
+            Live captions appear here.
+          </span>
+
+        </div>
+
+        <div
+          class="row"
+          style="margin-top:10px">
+
+          <input
+            id="typed"
+            placeholder="No mic? Type your sentence here"
+            style="flex:1">
+
+          <button
+            class="btn"
+            id="send">
+            Send
+          </button>
+
+        </div>
+
+      </div>
+
+      <div
+        class="card"
+        id="corr">
+
+        <h3>Correction card</h3>
+
+        <p class="mut">
+          Your corrections and scores appear here after you speak.
+        </p>
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+function bindPractice(){
+
+  const topicEl = $("#topic");
+
+  if(topicEl){
+
+    topicEl.onchange = e => {
+
+      topic = e.target.value;
+
+      if(call){
+        ask();
+      }
+
+    };
+
+  }
+
+  const start = $("#start");
+
+  if(start){
+    start.onclick = startCall;
+  }
+
+  const end = $("#end");
+
+  if(end){
+    end.onclick = () => endCall();
+  }
+
+  const mute = $("#mute");
+
+  if(mute){
+
+    mute.onclick = () => {
+
+      muted = !muted;
+
+      mute.textContent =
+        muted ? "Unmute" : "Mute";
+
+      if(muted){
+
+        stopRec();
+
+        if("speechSynthesis" in window){
+          speechSynthesis.cancel();
+        }
+
+      }
+
+    };
+
+  }
+
+  const mic = $("#mic");
+
+  if(mic){
+    mic.onclick = toggleMic;
+  }
+
+  const send = $("#send");
+
+  if(send){
+
+    send.onclick = () => {
+
+      const input = $("#typed");
+
+      const value =
+        input.value.trim();
+
+      if(value){
+
+        input.value = "";
+
+        turn(value);
+
+      }
+
+    };
+
+  }
+
+  const typed = $("#typed");
+
+  if(typed){
+
+    typed.onkeydown = e => {
+
+      if(e.key === "Enter"){
+        $("#send").click();
+      }
+
+    };
+
+  }
+
+  document
+    .querySelectorAll("[data-a]")
+    .forEach(button => {
+
+      button.onclick = () =>
+        action(button.dataset.a);
+
+    });
+
+}
+
+
+async function startCall(){
+
+  const logBox = $("#log");
+
+  if(logBox){
+    logBox.innerHTML = "";
+  }
+
+  call = true;
+  secs = 0;
+
+  clearInterval(timer);
+
+  timer = setInterval(() => {
+
+    secs++;
+
+    const min =
+      String(Math.floor(secs / 60))
+        .padStart(2,"0");
+
+    const sec =
+      String(secs % 60)
+        .padStart(2,"0");
+
+    const timerEl = $("#timer");
+
+    if(timerEl){
+      timerEl.textContent =
+        `${min}:${sec}`;
+    }
+
+  },1000);
+
+  $("#status").textContent =
+    "Connected to StudySpeak AI Teacher";
+
+  ["mic","mute","end"].forEach(id => {
+
+    const el = $("#"+id);
+
+    if(el){
+      el.disabled = false;
+    }
+
+  });
+
+  $("#start").disabled = true;
+
+  if(SR && navigator.mediaDevices){
+
+    try{
+
+      const stream =
+        await navigator.mediaDevices
+          .getUserMedia({audio:true});
+
+      stream
+        .getTracks()
+        .forEach(track => track.stop());
+
+      $("#micmsg").textContent =
+        "Microphone ready. Tap 🎤 and speak.";
+
+    }catch(e){
+
+      $("#micmsg").innerHTML =
+        `<span class="err">
+          Microphone blocked.
+        </span>
+        Allow microphone access or type below.`;
+
+      $("#mic").disabled = true;
+    }
+
+  }else{
+
+    $("#micmsg").textContent =
+      "Speech recognition is not available here. Type your sentence below.";
+
+    $("#mic").disabled = true;
+  }
+
+  say(
+    "Hello! Welcome to StudySpeak. " +
+    "I am your English teacher. " +
+    "Let us practise " +
+    topic +
+    ". " +
+    QS[topic]
+  );
+
+}
+
+
+function ask(){
+
+  say(QS[topic]);
+
+}
+
+
+function endCall(silent=false){
+
+  clearInterval(timer);
+
+  stopRec();
+
+  call = null;
+
+  if("speechSynthesis" in window){
+    speechSynthesis.cancel();
+  }
+
+  if(silent){
+    return;
+  }
+
+  const status = $("#status");
+
+  if(status){
+    status.textContent =
+      "Call ended (" +
+      ($("#timer")?.textContent || "00:00") +
+      ")";
+  }
+
+  ["mic","mute","end"].forEach(id => {
+
+    const el = $("#"+id);
+
+    if(el){
+      el.disabled = true;
+    }
+
+  });
+
+  const start = $("#start");
+
+  if(start){
+    start.disabled = false;
+  }
+
+  av("");
+
+  log(
+    "ai",
+    "Call ended. Great work today!"
+  );
+
+}
+
+
+function toggleMic(){
+
+  if(listening){
+    stopRec();
+  }else{
+    startRec();
+  }
+
+}
+
+
+function startRec(){
+
+  if(!SR){
+
+    $("#micmsg").textContent =
+      "Speech recognition is not supported. Type your sentence instead.";
+
+    return;
+  }
+
+  if(muted){
+
+    $("#micmsg").textContent =
+      "You are muted. Unmute first.";
+
+    return;
+  }
+
+  if(!call){
+
+    $("#micmsg").textContent =
+      "Start the call first.";
+
+    return;
+  }
+
+  if("speechSynthesis" in window){
+    speechSynthesis.cancel();
+  }
+
+  try{
+
+    rec = new SR();
+
+    rec.lang = "en-IN";
+    rec.interimResults = false;
+    rec.continuous = false;
+
+    rec.onstart = () => {
+
+      listening = true;
+
+      $("#mic").classList.add("on");
+
+      av("listen");
+
+      $("#micmsg").textContent =
+        "Listening… speak now.";
+
+    };
+
+    rec.onresult = e => {
+
+      const transcript =
+        e.results[0][0].transcript;
+
+      turn(transcript);
+
+    };
+
+    rec.onerror = e => {
+
+      $("#micmsg").innerHTML =
+        `<span class="err">
+          Could not hear you (${esc(e.error)}).
+        </span>
+        Try again or type below.`;
+
+    };
+
+    rec.onend = () => {
+
+      listening = false;
+
+      const mic = $("#mic");
+
+      if(mic){
+        mic.classList.remove("on");
+      }
+
+      av("");
+
+    };
+
+    rec.start();
+
+  }catch(e){
+
+    console.error(e);
+
+    listening = false;
+
+  }
+
+}
+
+
+function stopRec(){
+
+  try{
+
+    if(rec){
+      rec.stop();
+    }
+
+  }catch(e){}
+
+  listening = false;
+
+}
+
+
+function turn(s){
+
+  if(!call){
+    return;
+  }
+
+  const text =
+    String(s || "").trim();
+
+  if(!text){
+    return;
+  }
+
+  last = text;
+
+  log("me",text);
+
+  const r = analyze(text);
+
+  const corrections =
+    r.found.length
+      ? r.found
+          .map(f =>
+            `<p class="corr">
+              Important correction:
+              “${esc(f.wrong)}”
+              →
+              <b>“${esc(f.right)}”</b>
+              <br>
+              <span class="mut">
+                ${esc(f.why)}
+              </span>
+            </p>`
+          )
+          .join("")
+      : `
+        <p class="corr">
+          <b>No major mistakes. Nice effort!</b>
+        </p>
+      `;
+
+  $("#corr").innerHTML = `
+    <h3>Correction card</h3>
+
+    <p>
+      <span class="mut">You said:</span>
+      “${esc(text)}”
+    </p>
+
+    ${corrections}
+
+    <p>
+      Correct sentence:
+      <b>${esc(r.fixed)}</b>
+    </p>
+
+    <div class="row">
+
+      <span class="pill">
+        Grammar ${r.g}/10
+      </span>
+
+      <span class="pill">
+        Fluency ${r.f}/10
+      </span>
+
+      <span class="pill">
+        Vocabulary ${r.v}/10
+      </span>
+
+    </div>
+
+    <p>
+      💡 ${esc(r.tip)}
+    </p>
+  `;
+
+  last = r.fixed;
+
+  const first = r.found[0];
+
+  const reply = first
+    ? `Good try. One small correction. Instead of saying ${first.wrong}, say ${first.right}. A better sentence is: ${r.fixed} Please repeat the sentence once.`
+    : `Nice effort. You are improving. Let us say it naturally: ${r.fixed} Please repeat after me. Then tell me more.`;
+
+  say(reply);
+
+}
+
+
+function action(a){
+
+  if(!call){
+
+    alert("Start the call first.");
+
+    return;
+  }
+
+  if(a === "slow"){
+    say(last || QS[topic],0.6);
+  }
+
+  if(a === "te"){
+
+    say(
+      last
+        ? "Ippudu simple ga cheptanu. " +
+          "Correct sentence ee la untundi: " +
+          last +
+          " Meeru kuda repeat cheyandi."
+        : "Nenu oka simple question adugutanu. " +
+          "Meeru English lo answer cheyandi. " +
+          QS[topic]
+    );
+
+  }
+
+  if(a === "ex"){
+
+    say(
+      "For example: I completed my B.Tech in 2025, and I am looking for a software job."
+    );
+
+  }
+
+  if(a === "q"){
+    ask();
+  }
+
+  if(a === "topic"){
+
+    const index =
+      TOPICS.indexOf(topic);
+
+    topic =
+      TOPICS[
+        (index + 1) % TOPICS.length
+      ];
+
+    const topicEl = $("#topic");
+
+    if(topicEl){
+      topicEl.value = topic;
+    }
+
+    say(
+      "Let us change the topic to " +
+      topic +
+      ". " +
+      QS[topic]
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   STUDY MATERIAL
+========================================================= */
+
+const TABS = [
+  "Exact Transcript",
+  "Video/PDF Points",
+  "Screen Content",
+  "Voice Teacher",
+  "Notes",
+  "Flashcards",
+  "Quiz"
+];
+
+
+function study(){
+
+  if(!material){
+
+    return `
+      <h1>Learn from PDF or Video</h1>
+
+      <p class="note">
+        Upload a PDF, paste an educational video link,
+        or paste an authorized transcript.
+      </p>
+
+      <div class="grid">
+
+        <div class="card">
+
+          <h3>🎬 Educational Video</h3>
+
+          <p class="mut">
+            Paste a public YouTube educational video link.
+          </p>
+
+          <input
+            type="url"
+            id="videoUrl"
+            placeholder="https://www.youtube.com/watch?v=..."
+          >
+
+          <button
+            class="btn pri"
+            id="analyzeVideo"
+            style="margin-top:8px">
+            🎬 Analyze Video
+          </button>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>📄 PDF textbook or notes</h3>
+
+          <input
+            type="file"
+            id="pdf"
+            accept="application/pdf,image/png,image/jpeg,image/webp"
+          >
+
+          <p class="mut">
+            Maximum file size: 50 MB.
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>📝 Authorized transcript</h3>
+
+          <textarea
+            id="txt"
+            rows="5"
+            placeholder="Paste transcript or notes">
+          </textarea>
+
+          <button
+            class="btn"
+            id="usetxt"
+            style="margin-top:8px">
+            Use transcript
+          </button>
+
+        </div>
+
+      </div>
+
+      <div
+        id="up"
+        style="margin:14px 0">
+      </div>
+
+      <div class="card">
+
+        <b>Important</b>
+
+        <p class="mut">
+          PDF files with selectable text work best.
+          Scanned/image-only PDFs require OCR support on the server.
+        </p>
+
+      </div>
+    `;
+  }
+
+
+  return `
+    <div class="row">
+
+      <h1 style="margin:0;margin-right:auto">
+        ${esc(material)}
+      </h1>
+
+      <button
+        class="btn"
+        onclick="
+          material=null;
+          studyData=null;
+          quiz={i:0,score:0,done:false,ans:null};
+          fcFlip={};
+          render();
+        ">
+        🗑 Delete material
+      </button>
+
+    </div>
+
+    <p class="note">
+      Generated from your uploaded source material.
+      ${
+        studyData?.demoMode
+          ? " AI key is not configured, so basic fallback data is shown."
+          : ""
+      }
+    </p>
+
+    <div class="tabs">
+
+      ${TABS
+        .map(t =>
+          `<button
+            class="nav ${t===tab?"on":""}"
+            onclick="tab='${t}';render()">
+            ${t}
+          </button>`
+        )
+        .join("")}
+
+    </div>
+
+    <div class="card">
+      ${tabBody()}
+    </div>
+  `;
+}
+
+
+function tabBody(){
+
+  if(!studyData){
+    return "<p>Processing…</p>";
+  }
+
+  const transcript =
+    Array.isArray(studyData.transcript)
+      ? studyData.transcript
+      : [];
+
+  const points =
+    Array.isArray(studyData.points)
+      ? studyData.points
+      : [];
+
+  const screenContent =
+    Array.isArray(studyData.screen_content)
+      ? studyData.screen_content
+      : [];
+
+  const notes =
+    Array.isArray(studyData.notes)
+      ? studyData.notes
+      : [];
+
+  const flashcards =
+    Array.isArray(studyData.flashcards)
+      ? studyData.flashcards
+      : [];
+
+  switch(tab){
+
+    case "Exact Transcript":
+
+      return `
+        <h3>Extracted / Video Transcript</h3>
+
+        ${
+          transcript.length
+            ? transcript
+                .map((s,i) =>
+                  `<div class="seg">
+                    <span class="ts">
+                      [Section ${i+1}]
+                    </span>
+                    <br>
+                    ${esc(s)}
+                  </div>`
+                )
+                .join("")
+            : `
+              <p class="mut">
+                No transcript available.
+              </p>
+            `
+        }
+      `;
+
+
+    case "Video/PDF Points":
+
+      return `
+        <h3>
+          ${esc(studyData.title || "Key Points")}
+        </h3>
+
+        <p>
+          ${esc(studyData.summary || "")}
+        </p>
+
+        ${
+          points.length
+            ? `<ul>
+                ${points
+                  .map(p => `<li>${esc(p)}</li>`)
+                  .join("")}
+              </ul>`
+            : `<p class="mut">
+                No key points generated.
+              </p>`
+        }
+      `;
+
+
+    case "Screen Content":
+
+      return screenContent.length
+        ? screenContent
+            .map(s =>
+              `<div class="screen">
+                ${esc(
+                  typeof s === "string"
+                    ? s
+                    : (s.content || "")
+                )}
+              </div>`
+            )
+            .join("")
+        : `
+          <p class="mut">
+            No separate screen/formula content was detected.
+          </p>
+        `;
+
+
+    case "Notes":
+
+      return notes.length
+        ? notes
+            .map(n =>
+              `<div class="seg">
+                <h4 style="margin:10px 0 2px">
+                  ${esc(n.title || "Note")}
+                </h4>
+                <div>
+                  ${esc(n.content || "")}
+                </div>
+              </div>`
+            )
+            .join("")
+        : `
+          <p class="mut">
+            No notes generated.
+          </p>
+        `;
+
+
+    case "Flashcards":
+
+      return flashcards.length
+        ? `
+          <div class="grid">
+
+            ${flashcards
+              .map((c,i) =>
+                `<div
+                  class="card fc"
+                  onclick="
+                    fcFlip[${i}] = !fcFlip[${i}];
+                    render();
+                  ">
+
+                  ${
+                    fcFlip[i]
+                      ? esc(c.a || "")
+                      : esc(c.q || "")
+                  }
+
+                </div>`
+              )
+              .join("")}
+
+          </div>
+
+          <p class="mut">
+            Tap a card to flip it.
+          </p>
+        `
+        : `
+          <p class="mut">
+            No flashcards generated.
+          </p>
+        `;
+
+
+    case "Quiz":{
+
+      const Q =
+        Array.isArray(studyData.quiz)
+          ? studyData.quiz
+          : [];
+
+      if(!Q.length){
+
+        return `
+          <p class="mut">
+            No AI quiz was generated.
+            Configure your backend AI key and upload the material again.
+          </p>
+        `;
+
+      }
+
+      if(quiz.done){
+
+        return `
+          <h3>
+            Score: ${quiz.score}/${Q.length}
+          </h3>
+
+          <button
+            class="btn pri"
+            onclick="
+              quiz={
+                i:0,
+                score:0,
+                done:false,
+                ans:null
+              };
+              render();
+            ">
+            Retry
+          </button>
+        `;
+
+      }
+
+      const q = Q[quiz.i];
+
+      if(!q){
+        return "<p>Quiz data is invalid.</p>";
+      }
+
+      const options =
+        Array.isArray(q.options)
+          ? q.options
+          : [];
+
+      return `
+        <p class="mut">
+          Question ${quiz.i+1} of ${Q.length}
+        </p>
+
+        <h3>
+          ${esc(q.q || "Question")}
+        </h3>
+
+        ${
+          options
+            .map((o,i) =>
+              `<button
+                class="btn opt ${
+                  quiz.ans !== null
+                    ? (
+                        i === q.answer
+                          ? "good"
+                          : i === quiz.ans
+                            ? "wrong"
+                            : ""
+                      )
+                    : ""
+                }"
+                onclick="pick(${i})"
+                ${quiz.ans !== null ? "disabled" : ""}>
+                ${esc(o)}
+              </button>`
+            )
+            .join("")
+        }
+
+        ${
+          quiz.ans !== null
+            ? `
+              <p>
+                ${esc(q.explanation || "")}
+              </p>
+
+              <button
+                class="btn pri"
+                onclick="nextQ()">
+                ${quiz.i + 1 < Q.length ? "Next" : "Finish"}
+              </button>
+            `
+            : ""
+        }
+      `;
+    }
+
+
+    case "Voice Teacher":
+
+      return `
+        <div class="call">
+
+          <div
+            class="avatar"
+            id="av">
+            👩‍🏫
+          </div>
+
+          <div
+            class="row"
+            style="justify-content:center">
+
+            <button
+              class="btn pri"
+              id="vc">
+              Start Voice Class
+            </button>
+
+            <button
+              class="btn"
+              data-t="pause">
+              Pause Teacher
+            </button>
+
+            <button
+              class="btn"
+              data-t="slow">
+              Repeat Slowly
+            </button>
+
+            <button
+              class="btn"
+              data-t="simple">
+              Explain Simply
+            </button>
+
+            <button
+              class="btn"
+              data-t="te">
+              Explain in Telugu-English
+            </button>
+
+            <button
+              class="btn"
+              data-t="ex">
+              Give an Example
+            </button>
+
+            <button
+              class="btn"
+              data-t="q">
+              Ask Me a Question
+            </button>
+
+            <button
+              class="btn"
+              data-t="quiz">
+              Start Oral Quiz
+            </button>
+
+            <button
+              class="btn red"
+              data-t="end">
+              End Class
+            </button>
+
+          </div>
+
+          <div
+            class="row"
+            style="margin-top:12px">
+
+            <input
+              id="doubt"
+              placeholder="Ask a doubt"
+              style="flex:1">
+
+            <button
+              class="btn"
+              id="ask">
+              Ask
+            </button>
+
+          </div>
+
+          <div
+            class="log"
+            id="log"
+            aria-live="polite">
+          </div>
+
+        </div>
+      `;
+
+    default:
+
+      return "<p>Choose a study tab.</p>";
+  }
+
+}
+
+
+function pick(i){
+
+  if(!studyData || !Array.isArray(studyData.quiz)){
+    return;
+  }
+
+  const q =
+    studyData.quiz[quiz.i];
+
+  if(!q){
+    return;
+  }
+
+  if(quiz.ans !== null){
+    return;
+  }
+
+  quiz.ans = i;
+
+  if(i === q.answer){
+    quiz.score++;
+  }
+
+  render();
+
+}
+
+
+function nextQ(){
+
+  quiz.ans = null;
+
+  if(
+    studyData &&
+    Array.isArray(studyData.quiz) &&
+    quiz.i + 1 < studyData.quiz.length
+  ){
+
+    quiz.i++;
+
+  }else{
+
+    quiz.done = true;
+
+  }
+
+  render();
+
+}
+
+
+/* =========================================================
+   PDF UPLOAD
+========================================================= */
+
+async function uploadPDF(file){
+
+  const up = $("#up");
+
+  if(up){
+
+    up.innerHTML =
+      `Uploading ${esc(file.name)}…
+       <div class="bar" style="width:25%"></div>`;
+
+  }
+
+  const fd = new FormData();
+
+  fd.append("file",file);
+
+  try{
+
+    if(up){
+
+      up.innerHTML =
+        `Processing ${esc(file.name)}…
+         <div class="bar" style="width:60%"></div>`;
+    }
+
+    const response =
+      await fetch(
+        "/api/material",
+        {
+          method:"POST",
+          body:fd
+        }
+      );
+
+    let data;
+
+    try{
+      data = await response.json();
+    }catch(e){
+      throw new Error(
+        "Server returned an invalid response."
+      );
+    }
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error || "Upload failed."
+      );
+
+    }
+
+    studyData = data;
+
+    material = file.name;
+
+    tab = "Exact Transcript";
+
+    quiz = {
+      i:0,
+      score:0,
+      done:false,
+      ans:null
+    };
+
+    fcFlip = {};
+
+    render();
+
+  }catch(e){
+
+    console.error(e);
+
+    if(up){
+
+      up.innerHTML =
+        `<span class="err">
+          ${esc(e.message || "Upload failed.")}
+        </span>`;
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   VIDEO
+========================================================= */
+
+function getYouTubeId(url){
+
+  try{
+
+    const u = new URL(url);
+
+    if(
+      u.hostname.includes("youtube.com") &&
+      u.searchParams.get("v")
+    ){
+      return u.searchParams.get("v");
+    }
+
+    if(
+      u.hostname === "youtu.be"
+    ){
+      return u.pathname.slice(1);
+    }
+
+    if(
+      u.pathname.startsWith("/shorts/")
+    ){
+      return u.pathname.split("/")[2];
+    }
+
+  }catch(e){}
+
+  return null;
+}
+
+
+function showVideoPreview(url){
+
+  const id = getYouTubeId(url);
+
+  if(!id){
+    return "";
+  }
+
+  return `
+    <iframe
+      class="video-preview"
+      src="https://www.youtube.com/embed/${encodeURIComponent(id)}"
+      title="Educational video"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  `;
+}
+
+
+async function analyzeVideo(){
+
+  const input = $("#videoUrl");
+  const up = $("#up");
+
+  if(!input){
+    return;
+  }
+
+  const url = input.value.trim();
+
+  if(!url){
+
+    if(up){
+      up.innerHTML =
+        `<span class="err">
+          Please paste a YouTube video URL.
+        </span>`;
+    }
+
+    return;
+  }
+
+  const videoId = getYouTubeId(url);
+
+  if(!videoId){
+
+    if(up){
+      up.innerHTML =
+        `<span class="err">
+          Please enter a valid YouTube URL.
+        </span>`;
+    }
+
+    return;
+  }
+
+  if(up){
+
+    up.innerHTML = `
+      <p>
+        🎬 Preparing video…
+      </p>
+
+      ${showVideoPreview(url)}
+
+      <div class="bar" style="width:35%"></div>
+    `;
+
+  }
+
+  try{
+
+    const response =
+    await fetch(
+        "/api/video-link",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            url:url,
+            videoId:videoId,
+            mode:
+              lang === "te"
+                ? "telugu-english"
+                : lang === "si"
+                  ? "simple"
+                  : "english"
+          })
+        }
+      );
+
+    let data;
+
+    try{
+      data = await response.json();
+    }catch(e){
+      throw new Error(
+        "Video server returned an invalid response."
+      );
+    }
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error ||
+        "Video analysis failed."
+      );
+
+    }
+
+    studyData = normalizeStudyData(
+      data,
+      "Educational Video"
+    );
+
+    material =
+      data.title ||
+      "Educational Video";
+
+    tab = "Exact Transcript";
+
+    quiz = {
+      i:0,
+      score:0,
+      done:false,
+      ans:null
+    };
+
+    fcFlip = {};
+
+    render();
+
+  }catch(e){
+
+    console.error(e);
+
+    if(up){
+
+      up.innerHTML = `
+        ${showVideoPreview(url)}
+
+        <p class="err">
+          ${esc(
+            e.message ||
+            "Video analysis failed."
+          )}
+        </p>
+
+        <p class="mut">
+          The video preview can still be opened above.
+          Full transcript/notes require the backend
+          /api/video endpoint.
+        </p>
+      `;
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   NORMALIZE BACKEND DATA
+========================================================= */
+
+function normalizeStudyData(data,title){
+
+  const d = data || {};
+
+  return {
+
+    title:
+      d.title ||
+      title,
+
+    summary:
+      d.summary ||
+      "",
+
+    transcript:
+      Array.isArray(d.transcript)
+        ? d.transcript
+        : d.transcript
+          ? [String(d.transcript)]
+          : [],
+
+    points:
+      Array.isArray(d.points)
+        ? d.points
+        : [],
+
+    screen_content:
+      Array.isArray(d.screen_content)
+        ? d.screen_content
+        : [],
+
+    notes:
+      Array.isArray(d.notes)
+        ? d.notes
+        : [],
+
+    flashcards:
+      Array.isArray(d.flashcards)
+        ? d.flashcards
+        : [],
+
+    quiz:
+      Array.isArray(d.quiz)
+        ? d.quiz
+        : [],
+
+    voice_intro:
+      d.voice_intro ||
+      "Hello! Let us learn from this material.",
+
+    demoMode:
+      !!d.demoMode
+
+  };
+
+}
+
+
+/* =========================================================
+   STUDY PAGE BINDINGS
+========================================================= */
+
+function bindStudy(){
+
+  const h = (id,fn) => {
+
+    const e = $(id);
+
+    if(e){
+      e.onclick = fn;
+    }
+
+  };
+
+
+  /* ---------- Transcript ---------- */
+
+  h("#usetxt",() => {
+
+    const input = $("#txt");
+
+    if(!input){
+      return;
+    }
+
+    const value =
+      input.value.trim();
+
+    if(value.length < 20){
+
+      $("#up").innerHTML =
+        `<span class="err">
+          Paste at least a few sentences.
+        </span>`;
+
+      return;
+    }
+
+    studyData = normalizeStudyData(
+      {
+        title:"Pasted study material",
+
+        transcript:
+          value
+            .split(/\n+/)
+            .map(x => x.trim())
+            .filter(Boolean),
+
+        summary:value,
+
+        points:
+          value
+            .split(/[.!?]+/)
+            .map(x => x.trim())
+            .filter(Boolean)
+            .slice(0,8),
+
+        screen_content:[],
+        notes:[],
+        flashcards:[],
+        quiz:[],
+
+        voice_intro:
+          "Let us study this material."
+      },
+      "Pasted study material"
+    );
+
+    material =
+      "Pasted study material";
+
+    tab =
+      "Exact Transcript";
+
+    quiz = {
+      i:0,
+      score:0,
+      done:false,
+      ans:null
+    };
+
+    fcFlip = {};
+
+    render();
+
+  });
+
+
+  /* ---------- PDF ---------- */
+
+  const pdf = $("#pdf");
+
+  if(pdf){
+
+    pdf.onchange = () => {
+
+      const file =
+        pdf.files[0];
+
+      if(!file){
+        return;
+      }
+
+      const allowed = [
+        "application/pdf",
+        "image/png",
+        "image/jpeg",
+        "image/webp"
+      ];
+
+      if(!allowed.includes(file.type)){
+
+        $("#up").innerHTML =
+          `<span class="err">
+            Please choose a PDF, PNG, JPG or WEBP image.
+          </span>`;
+
+        return;
+      }
+
+      if(file.size > 50 * 1048576){
+
+        $("#up").innerHTML =
+          `<span class="err">
+            File is over 50 MB.
+          </span>`;
+
+        return;
+      }
+
+      uploadPDF(file);
+
+    };
+
+  }
+
+
+  /* ---------- Video ---------- */
+
+  h("#analyzeVideo",analyzeVideo);
+
+
+  /* ---------- Voice Teacher ---------- */
+
+  document
+    .querySelectorAll("[data-t]")
+    .forEach(button => {
+
+      button.onclick = () =>
+        teach(button.dataset.t);
+
+    });
+
+
+  h("#vc",() => {
+
+    const logBox = $("#log");
+
+    if(logBox){
+      logBox.innerHTML = "";
+    }
+
+    say(
+      studyData?.voice_intro ||
+      "Hello! Let us learn from your uploaded material."
+    );
+
+  });
+
+
+  /* ---------- Ask Doubt ---------- */
+
+  h("#ask",async() => {
+
+    const doubt = $("#doubt");
+
+    if(!doubt){
+      return;
+    }
+
+    const value =
+      doubt.value.trim();
+
+    if(!value){
+      return;
+    }
+
+    doubt.value = "";
+
+    log("me",value);
+
+    try{
+
+      const response =
+        await fetch(
+          "/api/teach",
+          {
+            method:"POST",
+            headers:{
+              "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+
+              source:
+                (studyData?.transcript || [])
+                  .join("\n"),
+
+              question:value,
+
+              mode:
+                lang === "te"
+                  ? "telugu-english"
+                  : lang === "si"
+                    ? "simple"
+                    : "english"
+
+            })
+          }
+        );
+
+      let data;
+
+      try{
+        data = await response.json();
+      }catch(e){
+        throw new Error(
+          "Teacher server returned an invalid response."
+        );
+      }
+
+      if(!response.ok){
+
+        throw new Error(
+          data.error ||
+          "Teacher could not answer."
+        );
+
+      }
+
+      say(
+        data.answer ||
+        data.error ||
+        "No answer returned."
+      );
+
+    }catch(e){
+
+      console.error(e);
+
+      say(
+        "Teacher could not answer right now."
+      );
+
+    }
+
+  });
+
+}
+
+
+/* =========================================================
+   VOICE TEACHER ACTIONS
+========================================================= */
+
+function teach(action){
+
+  const text =
+    (studyData?.transcript || [])
+      .join(" ");
+
+  const notes =
+    studyData?.notes || [];
+
+  const fallback =
+    text.slice(0,500) ||
+    studyData?.summary ||
+    "There is no study content available yet.";
+
+  const firstQuiz =
+    Array.isArray(studyData?.quiz) &&
+    studyData.quiz.length
+      ? studyData.quiz[0]
+      : null;
+
+  const actions = {
+
+    pause:() => {
+
+      if("speechSynthesis" in window){
+        speechSynthesis.cancel();
+      }
+
+    },
+
+    slow:() =>
+      say(fallback,0.6),
+
+    simple:() =>
+      say(
+        "In simple words: " +
+        (studyData?.summary || fallback)
+      ),
+
+    te:() =>
+      say(
+        "Simple ga cheppalante: " +
+        (studyData?.summary || fallback)
+      ),
+
+    ex:() =>
+      say(
+        notes[0]?.content ||
+        fallback
+      ),
+
+    q:() =>
+      say(
+        firstQuiz?.q ||
+        "Tell me one important point from this lesson."
+      ),
+
+    quiz:() =>
+      say(
+        firstQuiz?.q ||
+        "Tell me one important point from this lesson."
+      ),
+
+    end:() => {
+
+      if("speechSynthesis" in window){
+        speechSynthesis.cancel();
+      }
+
+      log(
+        "ai",
+        "Class ended. Well done!"
+      );
+
+    }
+
+  };
+
+  if(actions[action]){
+    actions[action]();
+  }
+
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+function progress(){
+
+  const trends = [
+    ["Grammar",[5,6,6,7,7,8,8]],
+    ["Fluency",[4,5,5,6,7,7,7]],
+    ["Vocabulary",[5,5,6,6,6,7,8]]
+  ];
+
+  return `
+
+    <h1>Progress Dashboard</h1>
+
+    <p class="note">
+      Sample data shown. Sign-in and saved progress
+      can be added in the full version.
+    </p>
+
+    <div class="grid">
+
+      ${
+        [
+          ["Speaking minutes","142"],
+          ["Voice sessions","18"],
+          ["Daily streak","6 days 🔥"],
+          ["Lessons completed","4"],
+          ["Quiz average","82%"],
+          ["New words","37"]
+        ]
+        .map(s =>
+          `<div class="card">
+
+            <div class="mut">
+              ${s[0]}
+            </div>
+
+            <div
+              style="font-size:28px;font-weight:800">
+              ${s[1]}
+            </div>
+
+          </div>`
+        )
+        .join("")
+      }
+
+    </div>
+
+    <h2>
+      Score trends
+    </h2>
+
+    <div class="grid">
+
+      ${
+        trends
+          .map(t => {
+
+            const points =
+              t[1]
+                .map(
+                  (v,i) =>
+                    `${i*22+4},${48-v*4.5}`
+                )
+                .join(" ");
+
+            return `
+              <div class="card">
+
+                <b>${t[0]}</b>
+
+                <svg
+                  viewBox="0 0 140 50"
+                  width="100%"
+                  role="img"
+                  aria-label="${t[0]} trend">
+
+                  <polyline
+                    fill="none"
+                    stroke="#7c4dff"
+                    stroke-width="3"
+                    points="${points}">
+                  </polyline>
+
+                </svg>
+
+                <span class="mut">
+                  ${t[1][0]}
+                  →
+                  ${t[1][6]}
+                  out of 10
+                </span>
+
+              </div>
+            `;
+
+          })
+          .join("")
+      }
+
+    </div>
+
+    <div
+      class="grid"
+      style="margin-top:14px">
+
+      <div class="card">
+
+        <h3>Common mistakes</h3>
+
+        <ul>
+          <li>Missing articles (a / the)</li>
+          <li>"am completed" instead of "completed"</li>
+          <li>Verb form with he/she</li>
+        </ul>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Corrected sentences</h3>
+
+        <ul>
+          <li>I completed my B.Tech.</li>
+          <li>I want a job.</li>
+        </ul>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Weak topics</h3>
+
+        <ul>
+          <li>Past tense</li>
+          <li>Articles</li>
+          <li>Verb forms</li>
+        </ul>
+
+      </div>
+
+    </div>
+
+  `;
+}
+
+
+/* =========================================================
+   LANGUAGE + THEME
+========================================================= */
+
+const langSelect = $("#lang");
+
+if(langSelect){
+
+  langSelect.onchange = e => {
+
+    lang = e.target.value;
+
+    if(lang === "te"){
+
+      alert(
+        "Telugu-English mode enabled. " +
+        "Explanations will use Telugu written in English letters."
+      );
+
+    }
+
+  };
+
+}
+
+
+const themeButton = $("#theme");
+
+if(themeButton){
+
+  themeButton.onclick = () => {
+
+    const root =
+      document.documentElement;
+
+    const isDark =
+      root.dataset.theme === "dark" ||
+      (
+        !root.dataset.theme &&
+        window.matchMedia(
+          "(prefers-color-scheme:dark)"
+        ).matches
+      );
+
+    root.dataset.theme =
+      isDark
+        ? "light"
+        : "dark";
+
+  };
+
+}
+
+
+/* =========================================================
+   START APP
+========================================================= */
+
+render();
+
+</script>
+
+</body>
+</html>
